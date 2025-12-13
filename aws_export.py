@@ -228,6 +228,8 @@ def main():
                         help='Path to YOLO NCNN model folder (default: best_yolo_ncnn_model)')
     parser.add_argument('--confidence', type=float, default=0.70,
                         help='Confidence threshold for detections (default: 0.70)')
+    parser.add_argument('--lambda-url', type=str, default=None, dest='lambda_url',
+                        help='AWS Lambda URL to send detection data (optional)')
     
     args = parser.parse_args()
     
@@ -252,9 +254,9 @@ def main():
     
     try:
         if args.mode == 'livefeed':
-            livefeed_mode(model, args.confidence)
+            livefeed_mode(model, args.confidence, args.lambda_url)
         elif args.mode == 'loadimg':
-            loadimg_mode(model, args.path, args.confidence)
+            loadimg_mode(model, args.path, args.confidence, args.lambda_url)
             
     except KeyboardInterrupt:
         print("\nInterrupted by Ctrl+C")
